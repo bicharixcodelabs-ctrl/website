@@ -1,7 +1,6 @@
 /* =========================================================
    Bicharix Code Labs — site script
-   Theme toggle · mobile nav · scroll reveal · testimonials
-   paginator · contact form · footer year
+   Theme toggle · mobile nav · testimonials paginator · footer year
    ========================================================= */
 (function () {
   "use strict";
@@ -20,7 +19,7 @@
       themeToggle.setAttribute("aria-pressed", String(isDark));
       themeToggle.setAttribute(
         "aria-label",
-        isDark ? "Switch to light theme" : "Switch to dark theme"
+        isDark ? "Switch to light theme" : "Switch to dark theme",
       );
     }
   }
@@ -37,7 +36,8 @@
 
   if (themeToggle) {
     themeToggle.addEventListener("click", function () {
-      const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      const current =
+        root.getAttribute("data-theme") === "dark" ? "dark" : "light";
       const next = current === "dark" ? "light" : "dark";
       applyTheme(next);
       localStorage.setItem(THEME_KEY, next);
@@ -61,33 +61,6 @@
         navLinks.classList.remove("open");
         menuToggle.setAttribute("aria-expanded", "false");
       });
-    });
-  }
-
-  /* -----------------------------------------------------
-     Scroll reveal (AOS-style, via IntersectionObserver)
-     ----------------------------------------------------- */
-  const revealEls = document.querySelectorAll("[data-reveal]");
-
-  if ("IntersectionObserver" in window && revealEls.length) {
-    const revealObserver = new IntersectionObserver(
-      function (entries, observer) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
-    );
-
-    revealEls.forEach(function (el) {
-      revealObserver.observe(el);
-    });
-  } else {
-    revealEls.forEach(function (el) {
-      el.classList.add("is-visible");
     });
   }
 
@@ -173,12 +146,20 @@
           return (
             '<article class="testimonial-card">' +
             starRow() +
-            "<blockquote>&ldquo;" + t.quote + "&rdquo;</blockquote>" +
+            "<blockquote>&ldquo;" +
+            t.quote +
+            "&rdquo;</blockquote>" +
             '<div class="t-author">' +
-            '<div class="t-avatar" aria-hidden="true">' + t.initials + "</div>" +
+            '<div class="t-avatar" aria-hidden="true">' +
+            t.initials +
+            "</div>" +
             "<div>" +
-            '<p class="t-name">' + t.name + "</p>" +
-            '<p class="t-role">' + t.role + "</p>" +
+            '<p class="t-name">' +
+            t.name +
+            "</p>" +
+            '<p class="t-role">' +
+            t.role +
+            "</p>" +
             "</div>" +
             "</div>" +
             "</article>"
@@ -237,57 +218,10 @@
   }
 
   /* -----------------------------------------------------
-     Contact form (client-side only — wire to a backend
-     or a form service like Formspree when ready)
-     ----------------------------------------------------- */
-  const contactForm = document.getElementById("contactForm");
-  const formStatus = document.getElementById("formStatus");
-
-  if (contactForm && formStatus) {
-    contactForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const name = document.getElementById("name");
-      const email = document.getElementById("email");
-      const projectType = document.getElementById("projectType");
-      const message = document.getElementById("message");
-
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (
-        !name.value.trim() ||
-        !emailPattern.test(email.value.trim()) ||
-        !projectType.value ||
-        !message.value.trim()
-      ) {
-        formStatus.textContent =
-          "Please fill in every field with a valid email before sending.";
-        formStatus.className = "form-status error";
-        return;
-      }
-
-      // Placeholder success state — replace this block with a real
-      // submission (fetch to your API, Formspree, etc.) when ready.
-      formStatus.textContent =
-        "Thanks, " + name.value.trim().split(" ")[0] + "! We'll reply within one business day.";
-      formStatus.className = "form-status success";
-      contactForm.reset();
-    });
-  }
-
-  /* -----------------------------------------------------
      Footer year
      ----------------------------------------------------- */
   const yearEl = document.getElementById("year");
   if (yearEl) {
     yearEl.textContent = String(new Date().getFullYear());
-  }
-
-  /* -----------------------------------------------------
-     Hero background circuit traces (decorative, generated)
-     ----------------------------------------------------- */
-  const heroTraces = document.getElementById("heroTraces");
-  if (heroTraces) {
-    heroTraces.style.setProperty("--traces-ready", "1");
   }
 })();
