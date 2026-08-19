@@ -27,9 +27,8 @@
   function getPreferredTheme() {
     const stored = localStorage.getItem(THEME_KEY);
     if (stored === "light" || stored === "dark") return stored;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    // Site defaults to dark mode regardless of system preference.
+    return "dark";
   }
 
   applyTheme(getPreferredTheme());
@@ -223,5 +222,62 @@
   const yearEl = document.getElementById("year");
   if (yearEl) {
     yearEl.textContent = String(new Date().getFullYear());
+  }
+
+  /* -----------------------------------------------------
+     Hero code-card typewriter — types the plain code out
+     character by character, then swaps in the syntax-
+     highlighted version once typing finishes.
+     ----------------------------------------------------- */
+  const heroCode = document.getElementById("heroCode");
+  if (heroCode) {
+    const finalHTML = heroCode.innerHTML;
+    const fullText = heroCode.textContent;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    function showFinal() {
+      heroCode.innerHTML = finalHTML;
+    }
+
+    if (reduceMotion || !fullText) {
+      showFinal();
+    } else {
+      heroCode.textContent = "";
+      let i = 0;
+
+      function typeNext() {
+        i++;
+        const cursor = document.createElement("span");
+        cursor.className = "code-cursor";
+        heroCode.textContent = fullText.slice(0, i);
+        heroCode.appendChild(cursor);
+
+        if (i < fullText.length) {
+          setTimeout(typeNext, 16);
+        } else {
+          showFinal();
+        }
+      }
+
+      const codeCard = heroCode.closest(".code-card");
+      if ("IntersectionObserver" in window && codeCard) {
+        const observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                typeNext();
+                observer.disconnect();
+              }
+            });
+          },
+          { threshold: 0.3 },
+        );
+        observer.observe(codeCard);
+      } else {
+        typeNext();
+      }
+    }
   }
 })();

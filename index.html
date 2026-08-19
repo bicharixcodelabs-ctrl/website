@@ -4,6 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("bicharix-theme");
+          document.documentElement.setAttribute(
+            "data-theme",
+            stored === "light" || stored === "dark" ? stored : "dark",
+          );
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
+
     <!-- Primary SEO -->
     <title>
       Bicharix Code Labs Private Limited | Custom Software &amp; Web Development
@@ -22,17 +36,8 @@
     <meta name="googlebot" content="index, follow" />
     <link rel="canonical" href="https://www.bicharixcodelabs.com/" />
 
-    <!-- Theme colour (matches light/dark surface) -->
-    <meta
-      name="theme-color"
-      content="#faf9fc"
-      media="(prefers-color-scheme: light)"
-    />
-    <meta
-      name="theme-color"
-      content="#0f0a1a"
-      media="(prefers-color-scheme: dark)"
-    />
+    <!-- Theme colour (site defaults to dark mode) -->
+    <meta name="theme-color" content="#0f0a1a" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -240,32 +245,38 @@
         </div>
 
         <div class="hero-visual" aria-hidden="true">
-          <div class="preview-card">
-            <div class="preview-card-head">
-              <span class="preview-dot"></span>
-              <span class="preview-dot"></span>
-              <span class="preview-dot"></span>
-              <span class="preview-label mono">live build preview</span>
+          <div class="code-card">
+            <div class="code-card-head">
+              <span class="code-dot code-dot-pink"></span>
+              <span class="code-dot code-dot-amber"></span>
+              <span class="code-dot code-dot-green"></span>
+              <span class="code-file mono">ship.ts</span>
+              <span class="code-live mono"
+                ><span class="code-live-dot"></span>live</span
+              >
             </div>
-            <div class="preview-chart">
-              <div class="preview-bar" style="--h: 38%"></div>
-              <div class="preview-bar" style="--h: 55%"></div>
-              <div class="preview-bar" style="--h: 47%"></div>
-              <div class="preview-bar" style="--h: 72%"></div>
-              <div class="preview-bar" style="--h: 90%"></div>
-            </div>
-            <div class="preview-foot">
+            <pre
+              class="code-body mono"
+            ><code id="heroCode"><span class="tok-com">// your idea, compiled</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ship</span>(idea) {
+  <span class="tok-kw">const</span> plan  = discover(idea);
+  <span class="tok-kw">const</span> build = design(plan);
+  <span class="tok-kw">return</span> launch(build);
+}
+
+<span class="tok-fn">ship</span>(<span class="tok-str">"your idea"</span>)<span class="code-cursor"></span></code></pre>
+            <div class="code-foot">
               <div>
-                <span class="mono">98</span>
-                <small>Lighthouse SEO</small>
+                <span class="mono">04</span>
+                <small>Build stages</small>
               </div>
               <div>
-                <span class="mono">0.8s</span>
-                <small>First paint</small>
+                <span class="mono">100%</span>
+                <small>Senior-written</small>
               </div>
               <div>
-                <span class="mono">AA</span>
-                <small>Accessibility</small>
+                <span class="mono">0</span>
+                <small>Templates used</small>
               </div>
             </div>
           </div>
@@ -274,12 +285,14 @@
 
       <!-- ================= SERVICES ================= -->
       <section id="services" class="section" aria-labelledby="services-heading">
-        <p class="kicker">Services</p>
-        <h2 id="services-heading">What we build</h2>
-        <p class="section-lede">
-          Four ways to work with us — pick one, or combine them as your project
-          grows.
-        </p>
+        <div class="section-head">
+          <p class="kicker">Services</p>
+          <h2 id="services-heading">What we build</h2>
+          <p class="section-lede">
+            Four ways to work with us — pick one, or combine them as your
+            project grows.
+          </p>
+        </div>
 
         <div class="services-grid">
           <article class="service-card">
@@ -410,12 +423,14 @@
         class="section section-alt"
         aria-labelledby="process-heading"
       >
-        <p class="kicker">Process</p>
-        <h2 id="process-heading">How an engagement runs</h2>
-        <p class="section-lede">
-          A straight line from first call to shipped software — no handoffs
-          between departments you'll never meet.
-        </p>
+        <div class="section-head">
+          <p class="kicker">Process</p>
+          <h2 id="process-heading">How an engagement runs</h2>
+          <p class="section-lede">
+            A straight line from first call to shipped software — no handoffs
+            between departments you'll never meet.
+          </p>
+        </div>
 
         <ol class="process-list">
           <li class="process-step">
@@ -463,8 +478,10 @@
 
       <!-- ================= WHY US ================= -->
       <section id="why" class="section" aria-labelledby="why-heading">
-        <p class="kicker">Why us</p>
-        <h2 id="why-heading">Why teams choose to work with us</h2>
+        <div class="section-head">
+          <p class="kicker">Why us</p>
+          <h2 id="why-heading">Why teams choose to work with us</h2>
+        </div>
 
         <div class="why-grid">
           <article class="why-card">
@@ -504,12 +521,14 @@
         class="section section-alt"
         aria-labelledby="testimonials-heading"
       >
-        <p class="kicker">Testimonials</p>
-        <h2 id="testimonials-heading">What early clients say</h2>
-        <p class="section-lede">
-          Sample quotes below — replace these with real client feedback as
-          engagements wrap up.
-        </p>
+        <div class="section-head">
+          <p class="kicker">Testimonials</p>
+          <h2 id="testimonials-heading">What early clients say</h2>
+          <p class="section-lede">
+            Sample quotes below — replace these with real client feedback as
+            engagements wrap up.
+          </p>
+        </div>
 
         <div class="testimonials-viewport">
           <div

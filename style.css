@@ -18,16 +18,22 @@
     var(--brand-pink-dark)
   );
 
-  /* light theme surface system */
-  --bg: #faf9fc;
-  --bg-alt: #f3effa;
-  --surface: #ffffff;
-  --surface-border: #e7e0f2;
-  --surface-shadow: 0 10px 26px -18px rgba(76, 29, 149, 0.28);
-  --ink: #1a1425;
-  --ink-soft: #47405a;
-  --ink-mute: #726a86;
-  --shadow: 0 22px 44px -20px rgba(109, 40, 217, 0.28);
+  /* dark theme surface system (site default) */
+  --bg: #0f0a1a;
+  --bg-alt: #150e24;
+  --surface: #180f28;
+  --surface-border: #2c1f42;
+  --surface-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.55);
+  --ink: #f4f0fb;
+  --ink-soft: #cbc0dd;
+  --ink-mute: #8d80a5;
+  --shadow: 0 20px 45px -18px rgba(228, 35, 127, 0.35);
+
+  /* code-card syntax colours (dark-friendly) */
+  --code-kw: #f472b6;
+  --code-fn: #c4b5fd;
+  --code-str: #4ade80;
+  --code-com: var(--ink-mute);
 
   --radius-lg: 22px;
   --radius-md: 14px;
@@ -38,34 +44,26 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --ease: cubic-bezier(0.22, 0.85, 0.32, 1);
-  color-scheme: light;
-}
-
-html[data-theme="dark"] {
-  --bg: #0f0a1a;
-  --bg-alt: #150e24;
-  --surface: #180f28;
-  --surface-border: #2c1f42;
-  --surface-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.55);
-  --ink: #f4f0fb;
-  --ink-soft: #cbc0dd;
-  --ink-mute: #8d80a5;
-  --shadow: 0 20px 45px -18px rgba(228, 35, 127, 0.35);
   color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]):not([data-theme="dark"]) {
-    --bg: #0f0a1a;
-    --bg-alt: #150e24;
-    --surface: #180f28;
-    --surface-border: #2c1f42;
-    --surface-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.55);
-    --ink: #f4f0fb;
-    --ink-soft: #cbc0dd;
-    --ink-mute: #8d80a5;
-    color-scheme: dark;
-  }
+html[data-theme="light"] {
+  --bg: #faf9fc;
+  --bg-alt: #f3effa;
+  --surface: #ffffff;
+  --surface-border: #e7e0f2;
+  --surface-shadow: 0 10px 26px -18px rgba(76, 29, 149, 0.28);
+  --ink: #1a1425;
+  --ink-soft: #47405a;
+  --ink-mute: #726a86;
+  --shadow: 0 22px 44px -20px rgba(109, 40, 217, 0.28);
+
+  --code-kw: var(--brand-pink-dark);
+  --code-fn: var(--brand-purple);
+  --code-str: #1a9c57;
+  --code-com: var(--ink-mute);
+
+  color-scheme: light;
 }
 
 *,
@@ -195,6 +193,25 @@ html[data-theme="dark"] .kicker {
 .section-lede {
   max-width: 620px;
   font-size: 1.05rem;
+}
+
+/* Section intros (Services / Process / Why us / Testimonials) are centred
+   so they read as a page-level statement rather than a left-stranded label */
+.section-head {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.6rem;
+}
+.section-head .kicker {
+  justify-content: center;
+}
+.section-head h2 {
+  margin-bottom: 0.6rem;
+}
+.section-head .section-lede {
+  margin: 0 auto;
 }
 
 .btn {
@@ -433,91 +450,183 @@ html[data-theme="dark"] .icon-moon path {
   color: var(--ink-soft);
 }
 .hero-fact-dot {
+  position: relative;
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--brand-gradient);
   flex: none;
 }
+/* small live pulse so the bullet list reads as "active", not static.
+   Uses top/left + negative margin instead of the `inset` shorthand,
+   which older Safari/WebKit builds don't support (it would silently
+   collapse the ring to 0×0 and the animation would appear to do nothing). */
+.hero-fact-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  opacity: 0.6;
+  animation: fact-pulse 2.2s var(--ease) infinite;
+}
+.hero-facts li:nth-child(2) .hero-fact-dot::after {
+  animation-delay: 0.5s;
+}
+.hero-facts li:nth-child(3) .hero-fact-dot::after {
+  animation-delay: 1s;
+}
+@keyframes fact-pulse {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.6;
+  }
+  70% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
 
-/* Hero visual — static product-preview card (no motion) */
+/* Hero visual — live code-editor card, echoes the Process steps
+   (discover / design / build / launch) instead of unrelated metrics */
 .hero-visual {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.preview-card {
+.code-card {
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
-  padding: 1.3rem 1.3rem 1.5rem;
   overflow: hidden;
 }
-.preview-card-head {
+.code-card-head {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  margin-bottom: 1.4rem;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--surface-border);
 }
-.preview-dot {
+.code-dot {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--surface-border);
+  flex: none;
 }
-.preview-dot:nth-child(1) {
+.code-dot-pink {
   background: var(--brand-pink);
 }
-.preview-dot:nth-child(2) {
+.code-dot-amber {
   background: #f4c04a;
 }
-.preview-dot:nth-child(3) {
+.code-dot-green {
   background: #34c17a;
 }
-.preview-label {
+.code-file {
   margin-left: 0.5rem;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: var(--ink-mute);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
-.preview-chart {
+.code-live {
+  margin-left: auto;
   display: flex;
-  align-items: flex-end;
-  gap: 0.6rem;
-  height: 130px;
-  padding: 0 0.2rem;
-  border-bottom: 1px solid var(--surface-border);
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
 }
-.preview-bar {
-  flex: 1;
-  height: var(--h);
-  border-radius: 6px 6px 0 0;
-  background: var(--brand-gradient);
-  opacity: 0.88;
+.code-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34c17a;
+  animation: live-blink 1.6s ease-in-out infinite;
 }
-.preview-bar:nth-child(5) {
-  opacity: 1;
+@keyframes live-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
 }
-.preview-foot {
+
+.code-body {
+  margin: 0;
+  padding: 1.2rem 1.1rem;
+  font-size: 0.86rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  color: var(--ink-soft);
+  background: transparent;
+}
+.tok-kw {
+  color: var(--code-kw);
+  font-weight: 600;
+}
+.tok-fn {
+  color: var(--code-fn);
+}
+.tok-str {
+  color: var(--code-str);
+}
+.tok-com {
+  color: var(--code-com);
+  font-style: italic;
+}
+.code-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: var(--brand-pink);
+  animation: cursor-blink 1s step-end infinite;
+}
+@keyframes cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.code-foot {
   display: flex;
   justify-content: space-between;
   gap: 0.8rem;
-  margin-top: 1.2rem;
+  padding: 1rem 1.1rem 1.3rem;
+  border-top: 1px solid var(--surface-border);
 }
-.preview-foot div {
+.code-foot div {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
 }
-.preview-foot .mono {
+.code-foot .mono {
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--ink);
 }
-.preview-foot small {
+.code-foot small {
   font-size: 0.7rem;
   color: var(--ink-mute);
 }
@@ -529,7 +638,6 @@ html[data-theme="dark"] .icon-moon path {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.4rem;
-  margin-top: 2.6rem;
 }
 .service-card {
   background: var(--surface);
@@ -580,7 +688,6 @@ html[data-theme="dark"] .service-icon {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.4rem;
-  margin-top: 2.6rem;
 }
 .process-step {
   position: relative;
@@ -615,7 +722,6 @@ html[data-theme="dark"] .step-index {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.4rem;
-  margin-top: 2.6rem;
 }
 .why-card {
   padding: 1.6rem 1.5rem;
@@ -637,7 +743,6 @@ html[data-theme="dark"] .step-index {
    ========================================================= */
 .testimonials-viewport {
   overflow: hidden;
-  margin-top: 2.6rem;
 }
 .testimonials-track {
   display: grid;
@@ -867,6 +972,14 @@ html[data-theme="dark"] .footer-links a:hover {
   .theme-toggle:hover {
     transform: none;
   }
+  .hero-fact-dot::after,
+  .code-live-dot,
+  .code-cursor {
+    animation: none;
+  }
+  .code-cursor {
+    opacity: 1;
+  }
 }
 
 /* =========================================================
@@ -901,6 +1014,15 @@ html[data-theme="dark"] .footer-links a:hover {
 }
 
 @media (max-width: 760px) {
+  /* the code-preview card is a desktop/tablet flourish — on phones it just
+     pushes the real copy down, so skip it and let the headline lead */
+  .hero-visual {
+    display: none;
+  }
+  .hero {
+    padding-top: 3.5rem;
+  }
+
   .nav-links {
     position: fixed;
     top: 64px;
