@@ -5,6 +5,10 @@
 (function () {
   "use strict";
 
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
   /* -----------------------------------------------------
      Theme toggle (persisted in localStorage)
      ----------------------------------------------------- */
@@ -172,18 +176,31 @@
     }
 
     function renderDots() {
-      dotsWrap.innerHTML = "";
-      for (let i = 0; i < pageCount; i++) {
-        const dot = document.createElement("button");
-        dot.type = "button";
-        dot.className = "pager-dot" + (i === page ? " active" : "");
-        dot.setAttribute("aria-label", "Go to testimonials page " + (i + 1));
-        dot.addEventListener("click", function () {
-          page = i;
-          renderPage();
-        });
-        dotsWrap.appendChild(dot);
+      let dots = dotsWrap.querySelectorAll(".pager-dot");
+
+      if (dots.length !== pageCount) {
+        dotsWrap.innerHTML = "";
+        for (let i = 0; i < pageCount; i++) {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "pager-dot";
+          dot.setAttribute("aria-label", "Go to testimonials page " + (i + 1));
+          dot.addEventListener("click", function () {
+            page = i;
+            renderPage();
+          });
+          dotsWrap.appendChild(dot);
+        }
+        dots = dotsWrap.querySelectorAll(".pager-dot");
       }
+
+      dots.forEach(function (dot, index) {
+        if (index === page) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+      });
     }
 
     prevBtn.addEventListener("click", function () {
@@ -214,6 +231,53 @@
     });
 
     renderPage();
+
+    /* -----------------------------------------------------
+       Auto-scroll — advances a page automatically, pauses on
+       hover/keyboard focus and while the tab isn't visible,
+       and is skipped entirely for reduced-motion users.
+       ----------------------------------------------------- */
+    const AUTOPLAY_MS = 5000;
+    let autoplayTimer = null;
+
+    function stopAutoplay() {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    }
+
+    function startAutoplay() {
+      if (prefersReducedMotion || pageCount <= 1) return;
+      stopAutoplay();
+      autoplayTimer = setInterval(function () {
+        page = (page + 1) % pageCount;
+        renderPage();
+      }, AUTOPLAY_MS);
+    }
+
+    const testimonialsSection = document.getElementById("testimonials");
+    if (testimonialsSection) {
+      testimonialsSection.addEventListener("mouseenter", stopAutoplay);
+      testimonialsSection.addEventListener("mouseleave", startAutoplay);
+      testimonialsSection.addEventListener("focusin", stopAutoplay);
+      testimonialsSection.addEventListener("focusout", startAutoplay);
+    }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+    });
+
+    // restart the timer on manual navigation so it doesn't jump right
+    // after someone has just clicked
+    prevBtn.addEventListener("click", startAutoplay);
+    nextBtn.addEventListener("click", startAutoplay);
+    dotsWrap.addEventListener("click", startAutoplay);
+
+    startAutoplay();
   }
 
   /* -----------------------------------------------------
@@ -225,23 +289,18 @@
   }
 
   /* -----------------------------------------------------
-     Hero code-card typewriter — types the plain code out
-     character by character, then swaps in the syntax-
-     highlighted version once typing finishes.
+     Hero code-card typewriter
      ----------------------------------------------------- */
   const heroCode = document.getElementById("heroCode");
   if (heroCode) {
     const finalHTML = heroCode.innerHTML;
     const fullText = heroCode.textContent;
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
 
     function showFinal() {
       heroCode.innerHTML = finalHTML;
     }
 
-    if (reduceMotion || !fullText) {
+    if (prefersReducedMotion || !fullText) {
       showFinal();
     } else {
       heroCode.textContent = "";
@@ -279,5 +338,51 @@
         typeNext();
       }
     }
+  }
+
+  /* -----------------------------------------------------
+     "LIVE" status dot 
+     ----------------------------------------------------- */
+  const liveDot = document.querySelector(".code-live-dot");
+  if (liveDot && !prefersReducedMotion) {
+    let liveOn = true;
+    setInterval(function () {
+      liveOn = !liveOn;
+      liveDot.style.opacity = liveOn ? "1" : "0.25";
+    }, 800);
+  }
+
+  /* -----------------------------------------------------
+     Hero fact-list "live" pulse rings 
+     ----------------------------------------------------- */
+  const pulseRings = document.querySelectorAll(".hero-fact-ring");
+  if (pulseRings.length && !prefersReducedMotion) {
+    const DURATION = 2200; // ms per pulse cycle
+    const DELAYS = [0, 500, 1000]; // stagger each dot like before
+    const start = performance.now();
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function tickPulse(now) {
+      pulseRings.forEach(function (ring, index) {
+        const delay = DELAYS[index % DELAYS.length];
+        const elapsed = (now - start - delay) % DURATION;
+        if (elapsed < 0) {
+          ring.style.opacity = "0";
+          return;
+        }
+        const t = elapsed / DURATION;
+        const eased = easeOutCubic(t);
+        const scale = 0.35 + eased * (1.9 - 0.35);
+        const opacity = Math.max(0, 0.6 * (1 - eased));
+        ring.style.transform = "scale(" + scale.toFixed(3) + ")";
+        ring.style.opacity = opacity.toFixed(3);
+      });
+      requestAnimationFrame(tickPulse);
+    }
+
+    requestAnimationFrame(tickPulse);
   }
 })();

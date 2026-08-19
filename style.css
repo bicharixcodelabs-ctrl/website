@@ -144,8 +144,7 @@ ol {
 }
 
 /* =========================================================
-   Kicker (section label) — small tracked label with a
-   gradient marker instead of bracket/brace punctuation
+   Kicker (section label)
    ========================================================= */
 .kicker {
   display: inline-flex;
@@ -158,16 +157,31 @@ ol {
   color: var(--brand-pink-dark);
   margin: 0 0 1rem;
 }
+
 .kicker::before {
   content: "";
+  display: inline-block;
   width: 8px;
   height: 8px;
-  border-radius: 3px;
+  border-radius: 50%;
   background: var(--brand-gradient);
   flex: none;
+  position: relative;
+  top: -1px; /* Optical tweak to center it with uppercase letters */
+  animation: kickerPulse 1.5s infinite alternate ease-in-out;
 }
-html[data-theme="dark"] .kicker {
-  color: #f472b6;
+
+@keyframes kickerPulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+    box-shadow: 0 0 0px transparent;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 1;
+    box-shadow: 0 0 6px rgba(228, 35, 127, 0.4);
+  }
 }
 
 /* =========================================================
@@ -195,8 +209,6 @@ html[data-theme="dark"] .kicker {
   font-size: 1.05rem;
 }
 
-/* Section intros (Services / Process / Why us / Testimonials) are centred
-   so they read as a page-level statement rather than a left-stranded label */
 .section-head {
   text-align: center;
   display: flex;
@@ -456,13 +468,21 @@ html[data-theme="dark"] .icon-moon path {
   border-radius: 50%;
   background: var(--brand-gradient);
   flex: none;
+  animation: heroPulse 1.8s infinite ease-in-out;
 }
-/* small live pulse so the bullet list reads as "active", not static.
-   Uses top/left + negative margin instead of the `inset` shorthand,
-   which older Safari/WebKit builds don't support (it would silently
-   collapse the ring to 0×0 and the animation would appear to do nothing). */
-.hero-fact-dot::after {
-  content: "";
+@keyframes heroPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+.hero-fact-ring {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -471,32 +491,11 @@ html[data-theme="dark"] .icon-moon path {
   margin: -7px 0 0 -7px;
   border-radius: 50%;
   background: var(--brand-gradient);
+  pointer-events: none;
+  transform: scale(0.35);
   opacity: 0.6;
-  animation: fact-pulse 2.2s var(--ease) infinite;
-}
-.hero-facts li:nth-child(2) .hero-fact-dot::after {
-  animation-delay: 0.5s;
-}
-.hero-facts li:nth-child(3) .hero-fact-dot::after {
-  animation-delay: 1s;
-}
-@keyframes fact-pulse {
-  0% {
-    transform: scale(0.35);
-    opacity: 0.6;
-  }
-  70% {
-    transform: scale(1.9);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.9);
-    opacity: 0;
-  }
 }
 
-/* Hero visual — live code-editor card, echoes the Process steps
-   (discover / design / build / launch) instead of unrelated metrics */
 .hero-visual {
   display: flex;
   align-items: center;
@@ -554,16 +553,7 @@ html[data-theme="dark"] .icon-moon path {
   height: 6px;
   border-radius: 50%;
   background: #34c17a;
-  animation: live-blink 1.6s ease-in-out infinite;
-}
-@keyframes live-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.25;
-  }
+  opacity: 1;
 }
 
 .code-body {
@@ -596,16 +586,17 @@ html[data-theme="dark"] .icon-moon path {
   margin-left: 2px;
   vertical-align: -2px;
   background: var(--brand-pink);
-  animation: cursor-blink 1s step-end infinite;
+  box-shadow: 0 0 2px rgba(228, 35, 127, 0.4);
+  animation: cursorPulse 1s infinite ease-in-out;
 }
-@keyframes cursor-blink {
+
+@keyframes cursorPulse {
   0%,
-  50% {
+  100% {
     opacity: 1;
   }
-  50.01%,
-  100% {
-    opacity: 0;
+  50% {
+    opacity: 0.15;
   }
 }
 
@@ -849,7 +840,18 @@ html[data-theme="dark"] .pager-btn:hover {
   padding: 0;
   cursor: pointer;
   transition: all 0.25s var(--ease);
+  animation: subtlePulse 2s infinite ease-in-out;
 }
+@keyframes subtlePulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 .pager-dot.active {
   background: var(--brand-gradient);
   width: 22px;
@@ -958,8 +960,6 @@ html[data-theme="dark"] .footer-links a:hover {
 
 /* =========================================================
    Reduced motion / interactive transitions only
-   (no scroll-reveal or ambient animation — kept intentionally
-   out per brief; only functional UI transitions remain)
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -971,14 +971,6 @@ html[data-theme="dark"] .footer-links a:hover {
   .pager-btn:hover,
   .theme-toggle:hover {
     transform: none;
-  }
-  .hero-fact-dot::after,
-  .code-live-dot,
-  .code-cursor {
-    animation: none;
-  }
-  .code-cursor {
-    opacity: 1;
   }
 }
 
@@ -1014,8 +1006,6 @@ html[data-theme="dark"] .footer-links a:hover {
 }
 
 @media (max-width: 760px) {
-  /* the code-preview card is a desktop/tablet flourish — on phones it just
-     pushes the real copy down, so skip it and let the headline lead */
   .hero-visual {
     display: none;
   }
