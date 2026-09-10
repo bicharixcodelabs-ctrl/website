@@ -1214,9 +1214,9 @@ html[data-theme="dark"] .footer-links a:hover {
     text-align: left;
   }
   .hero-visual {
-    order: -1;
+    order: 2;
     max-width: 320px;
-    margin: 0 auto 1.5rem;
+    margin: 2rem auto 0;
   }
 }
 
