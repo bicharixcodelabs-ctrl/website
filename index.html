@@ -18,6 +18,12 @@
       })();
     </script>
 
+    <!-- Flags JS support so scroll-reveal animations only ever hide
+         content when a script is actually present to reveal it again. -->
+    <script>
+      document.documentElement.classList.add("js-anim");
+    </script>
+
     <!-- Primary SEO -->
     <title>
       Bicharix Code Labs Private Limited | Custom Software &amp; Web Development
@@ -90,6 +96,14 @@
     />
 
     <link rel="stylesheet" href="style.css" />
+    <noscript>
+      <style>
+        .reveal > * {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
 
     <!-- Favicons -->
     <link rel="icon" href="assets/favicon.ico" sizes="any" />
@@ -158,6 +172,7 @@
 
         <ul class="nav-links" id="navLinks">
           <li><a href="#services">Services</a></li>
+          <li><a href="#products">Products</a></li>
           <li><a href="#work">Process</a></li>
           <li><a href="#why">Why us</a></li>
           <li><a href="#testimonials">Testimonials</a></li>
@@ -297,7 +312,7 @@
 
       <!-- ================= SERVICES ================= -->
       <section id="services" class="section" aria-labelledby="services-heading">
-        <div class="section-head">
+        <div class="section-head reveal">
           <p class="kicker">Services</p>
           <h2 id="services-heading">What we build</h2>
           <p class="section-lede">
@@ -306,7 +321,7 @@
           </p>
         </div>
 
-        <div class="services-grid">
+        <div class="services-grid reveal">
           <article class="service-card">
             <div class="service-icon" aria-hidden="true">
               <svg viewBox="0 0 40 40" width="30" height="30">
@@ -429,13 +444,392 @@
         </svg>
       </section>
 
+      <!-- ================= PRODUCTS ================= -->
+      <section
+        id="products"
+        class="section section-alt"
+        aria-labelledby="products-heading"
+      >
+        <div class="section-head reveal">
+          <p class="kicker">Products</p>
+          <h2 id="products-heading">Ready-to-run business software</h2>
+          <p class="section-lede">
+            Beyond bespoke builds, we develop accounting and HR platforms
+            your team can brand and run from day one.
+          </p>
+        </div>
+
+        <div class="product-panel reveal">
+          <div class="product-copy">
+            <span class="product-tag mono">Finance</span>
+            <h3>Accounting software</h3>
+            <p>
+              Invoicing, ledgers, expense tracking and financial reports —
+              wired to your chart of accounts and ready for your accountant
+              on day one.
+            </p>
+            <ul class="product-points">
+              <li>Automated invoicing &amp; payment tracking</li>
+              <li>Real-time profit &amp; loss and cash-flow reports</li>
+              <li>Multi-currency, tax-ready exports</li>
+            </ul>
+          </div>
+          <div class="product-visual" aria-hidden="true">
+            <svg
+              class="product-card"
+              viewBox="0 0 380 260"
+              role="img"
+              aria-label="Accounting software dashboard preview showing an invoice status and a revenue bar chart"
+            >
+              <rect
+                x="0.5"
+                y="0.5"
+                width="379"
+                height="259"
+                rx="17.5"
+                fill="var(--surface)"
+                stroke="var(--surface-border)"
+              />
+              <circle cx="23" cy="25" r="4" fill="var(--brand-pink)" />
+              <circle cx="37" cy="25" r="4" fill="#f4c04a" />
+              <circle cx="51" cy="25" r="4" fill="#34c17a" />
+              <text
+                x="67"
+                y="29"
+                font-family="var(--font-mono)"
+                font-size="10.5"
+                fill="var(--ink-mute)"
+              >
+                ledger.app
+              </text>
+              <line
+                x1="0"
+                y1="44"
+                x2="380"
+                y2="44"
+                stroke="var(--surface-border)"
+              />
+
+              <!-- revenue bar chart -->
+              <g>
+                <line
+                  x1="24"
+                  y1="205"
+                  x2="170"
+                  y2="205"
+                  stroke="var(--surface-border)"
+                />
+                <rect
+                  class="acct-bar acct-bar-1"
+                  x="30"
+                  y="150"
+                  width="20"
+                  height="55"
+                  rx="4"
+                  fill="url(#svcGrad)"
+                />
+                <rect
+                  class="acct-bar acct-bar-2"
+                  x="60"
+                  y="120"
+                  width="20"
+                  height="85"
+                  rx="4"
+                  fill="url(#svcGrad)"
+                />
+                <rect
+                  class="acct-bar acct-bar-3"
+                  x="90"
+                  y="165"
+                  width="20"
+                  height="40"
+                  rx="4"
+                  fill="url(#svcGrad)"
+                />
+                <rect
+                  class="acct-bar acct-bar-4"
+                  x="120"
+                  y="100"
+                  width="20"
+                  height="105"
+                  rx="4"
+                  fill="url(#svcGrad)"
+                />
+                <rect
+                  class="acct-bar acct-bar-5"
+                  x="150"
+                  y="135"
+                  width="20"
+                  height="70"
+                  rx="4"
+                  fill="url(#svcGrad)"
+                />
+              </g>
+              <text
+                x="24"
+                y="222"
+                font-family="var(--font-mono)"
+                font-size="9"
+                fill="var(--ink-mute)"
+              >
+                Revenue by month
+              </text>
+
+              <!-- invoice card -->
+              <rect
+                x="196"
+                y="64"
+                width="160"
+                height="50"
+                rx="10"
+                fill="var(--bg-alt)"
+              />
+              <circle cx="219" cy="89" r="11" fill="#34c17a" opacity="0.16" />
+              <path
+                d="M214 89l4 4 8-8"
+                fill="none"
+                stroke="#34c17a"
+                stroke-width="2.3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <text
+                x="238"
+                y="86"
+                font-family="var(--font-body)"
+                font-size="11"
+                font-weight="600"
+                fill="var(--ink)"
+              >
+                Invoice #1042
+              </text>
+              <text
+                x="238"
+                y="100"
+                font-family="var(--font-mono)"
+                font-size="9.5"
+                fill="var(--ink-mute)"
+              >
+                Paid · Rs 48,000
+              </text>
+
+              <!-- trend sparkline -->
+              <rect
+                x="196"
+                y="128"
+                width="160"
+                height="77"
+                rx="10"
+                fill="var(--bg-alt)"
+              />
+              <text
+                x="208"
+                y="146"
+                font-family="var(--font-mono)"
+                font-size="9"
+                fill="var(--ink-mute)"
+              >
+                Cash flow
+              </text>
+              <polyline
+                class="acct-spark"
+                points="208,190 228,178 248,196 268,168 288,180 308,155 340,163"
+                fill="none"
+                stroke="url(#svcGrad)"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                pathLength="100"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="product-panel product-panel-rev reveal">
+          <div class="product-copy">
+            <span class="product-tag mono">People</span>
+            <h3>HR software</h3>
+            <p>
+              Employee records, attendance, leave and payroll basics in one
+              dashboard — built around how your HR team actually works.
+            </p>
+            <ul class="product-points">
+              <li>Centralised employee directory &amp; org chart</li>
+              <li>Attendance, leave and shift tracking</li>
+              <li>Payroll-ready exports every cycle</li>
+            </ul>
+          </div>
+          <div class="product-visual" aria-hidden="true">
+            <svg
+              class="product-card"
+              viewBox="0 0 380 260"
+              role="img"
+              aria-label="HR software dashboard preview showing an employee directory and today's attendance"
+            >
+              <rect
+                x="0.5"
+                y="0.5"
+                width="379"
+                height="259"
+                rx="17.5"
+                fill="var(--surface)"
+                stroke="var(--surface-border)"
+              />
+              <circle cx="23" cy="25" r="4" fill="var(--brand-pink)" />
+              <circle cx="37" cy="25" r="4" fill="#f4c04a" />
+              <circle cx="51" cy="25" r="4" fill="#34c17a" />
+              <text
+                x="67"
+                y="29"
+                font-family="var(--font-mono)"
+                font-size="10.5"
+                fill="var(--ink-mute)"
+              >
+                people.app
+              </text>
+              <line
+                x1="0"
+                y1="44"
+                x2="380"
+                y2="44"
+                stroke="var(--surface-border)"
+              />
+
+              <!-- employee directory grid -->
+              <text
+                x="24"
+                y="65"
+                font-family="var(--font-mono)"
+                font-size="9"
+                fill="var(--ink-mute)"
+              >
+                Team directory
+              </text>
+              <g font-family="var(--font-display)" font-size="10" fill="#fff">
+                <circle cx="35" cy="90" r="16" fill="url(#svcGrad)" />
+                <text x="35" y="94" text-anchor="middle">AS</text>
+                <circle cx="75" cy="90" r="16" fill="url(#svcGrad)" />
+                <text x="75" y="94" text-anchor="middle">PK</text>
+                <circle cx="115" cy="90" r="16" fill="url(#svcGrad)" />
+                <text x="115" y="94" text-anchor="middle">DR</text>
+                <circle cx="35" cy="130" r="16" fill="url(#svcGrad)" />
+                <text x="35" y="134" text-anchor="middle">SG</text>
+                <circle cx="75" cy="130" r="16" fill="url(#svcGrad)" />
+                <text x="75" y="134" text-anchor="middle">NT</text>
+                <circle cx="115" cy="130" r="16" fill="url(#svcGrad)" />
+                <text x="115" y="134" text-anchor="middle">AM</text>
+              </g>
+              <circle
+                class="hr-pulse-ring"
+                cx="47"
+                cy="78"
+                r="4"
+                fill="#34c17a"
+                opacity="0"
+              />
+              <circle cx="47" cy="78" r="3" fill="#34c17a" />
+              <circle
+                cx="47"
+                cy="78"
+                r="4"
+                fill="none"
+                stroke="var(--surface)"
+                stroke-width="1.6"
+              />
+
+              <!-- attendance donut -->
+              <text
+                x="215"
+                y="65"
+                font-family="var(--font-mono)"
+                font-size="9"
+                fill="var(--ink-mute)"
+              >
+                Attendance today
+              </text>
+              <circle
+                cx="255"
+                cy="115"
+                r="34"
+                fill="none"
+                stroke="var(--bg-alt)"
+                stroke-width="9"
+              />
+              <circle
+                class="hr-donut"
+                cx="255"
+                cy="115"
+                r="34"
+                fill="none"
+                stroke="url(#svcGrad)"
+                stroke-width="9"
+                stroke-linecap="round"
+                stroke-dasharray="213.6"
+                stroke-dashoffset="213.6"
+                transform="rotate(-90 255 115)"
+              />
+              <text
+                x="255"
+                y="112"
+                text-anchor="middle"
+                font-family="var(--font-display)"
+                font-weight="600"
+                font-size="15"
+                fill="var(--ink)"
+              >
+                82%
+              </text>
+              <text
+                x="255"
+                y="127"
+                text-anchor="middle"
+                font-family="var(--font-body)"
+                font-size="8.5"
+                fill="var(--ink-mute)"
+              >
+                Present
+              </text>
+
+              <!-- leave / shift row -->
+              <rect
+                x="24"
+                y="160"
+                width="332"
+                height="46"
+                rx="10"
+                fill="var(--bg-alt)"
+              />
+              <text
+                x="38"
+                y="180"
+                font-family="var(--font-body)"
+                font-size="10.5"
+                font-weight="600"
+                fill="var(--ink)"
+              >
+                3 leave requests pending
+              </text>
+              <text
+                x="38"
+                y="195"
+                font-family="var(--font-mono)"
+                font-size="9"
+                fill="var(--ink-mute)"
+              >
+                Next payroll run · 5 days
+              </text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
       <!-- ================= PROCESS ================= -->
       <section
         id="work"
         class="section section-alt"
         aria-labelledby="process-heading"
       >
-        <div class="section-head">
+        <div class="section-head reveal">
           <p class="kicker">Process</p>
           <h2 id="process-heading">How an engagement runs</h2>
           <p class="section-lede">
@@ -444,7 +838,7 @@
           </p>
         </div>
 
-        <ol class="process-list">
+        <ol class="process-list reveal">
           <li class="process-step">
             <span class="step-index mono">01</span>
             <div>
@@ -490,12 +884,12 @@
 
       <!-- ================= WHY US ================= -->
       <section id="why" class="section" aria-labelledby="why-heading">
-        <div class="section-head">
+        <div class="section-head reveal">
           <p class="kicker">Why us</p>
           <h2 id="why-heading">Why teams choose to work with us</h2>
         </div>
 
-        <div class="why-grid">
+        <div class="why-grid reveal">
           <article class="why-card">
             <h3>No agency layers</h3>
             <p>
@@ -533,7 +927,7 @@
         class="section section-alt"
         aria-labelledby="testimonials-heading"
       >
-        <div class="section-head">
+        <div class="section-head reveal">
           <p class="kicker">Testimonials</p>
           <h2 id="testimonials-heading">What early clients say</h2>
           <p class="section-lede">
@@ -600,7 +994,7 @@
         class="section contact-section"
         aria-labelledby="contact-heading"
       >
-        <div class="contact-grid">
+        <div class="contact-grid reveal">
           <div class="contact-copy">
             <p class="kicker">Start a project</p>
             <h2 id="contact-heading">Tell us what you're building.</h2>
@@ -648,6 +1042,7 @@
         </div>
         <nav class="footer-links" aria-label="Footer">
           <a href="#services">Services</a>
+          <a href="#products">Products</a>
           <a href="#work">Process</a>
           <a href="#testimonials">Testimonials</a>
           <a href="#contact">Contact</a>

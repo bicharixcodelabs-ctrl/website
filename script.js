@@ -10,6 +10,37 @@
   ).matches;
 
   /* -----------------------------------------------------
+     Scroll-reveal animations for section heads, cards and
+     the accounting / HR product illustrations. Works on any
+     viewport size; falls back to "just show everything" for
+     reduced-motion users or browsers without
+     IntersectionObserver.
+     ----------------------------------------------------- */
+  const revealTargets = document.querySelectorAll(".reveal");
+  if (revealTargets.length) {
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+      revealTargets.forEach(function (el) {
+        el.classList.add("in-view");
+      });
+    } else {
+      const revealObserver = new IntersectionObserver(
+        function (entries, obs) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in-view");
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.18, rootMargin: "0px 0px -40px 0px" },
+      );
+      revealTargets.forEach(function (el) {
+        revealObserver.observe(el);
+      });
+    }
+  }
+
+  /* -----------------------------------------------------
      Theme toggle (persisted in localStorage)
      ----------------------------------------------------- */
   const root = document.documentElement;

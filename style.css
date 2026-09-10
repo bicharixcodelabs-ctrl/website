@@ -185,6 +185,52 @@ ol {
 }
 
 /* =========================================================
+   Scroll-reveal utility
+   Elements are only ever hidden when `.js-anim` is present on
+   <html> (added by an inline script the moment JS runs), so
+   content stays fully visible with JS disabled, on any
+   viewport size, and for prefers-reduced-motion users.
+   ========================================================= */
+.reveal > * {
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
+}
+html.js-anim .reveal > * {
+  opacity: 0;
+  transform: translateY(28px);
+}
+html.js-anim .reveal.in-view > * {
+  opacity: 1;
+  transform: none;
+}
+.reveal > *:nth-child(1) {
+  transition-delay: 0ms;
+}
+.reveal > *:nth-child(2) {
+  transition-delay: 90ms;
+}
+.reveal > *:nth-child(3) {
+  transition-delay: 180ms;
+}
+.reveal > *:nth-child(4) {
+  transition-delay: 270ms;
+}
+.reveal > *:nth-child(5) {
+  transition-delay: 360ms;
+}
+.reveal > *:nth-child(6) {
+  transition-delay: 450ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js-anim .reveal > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* =========================================================
    Layout helpers
    ========================================================= */
 .section {
@@ -673,6 +719,155 @@ html[data-theme="dark"] .service-icon {
 }
 
 /* =========================================================
+   Products (accounting / HR software showcase)
+   ========================================================= */
+.product-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 4.5rem;
+}
+.product-panel:last-child {
+  margin-bottom: 0;
+}
+.product-panel-rev .product-copy {
+  order: 2;
+}
+.product-panel-rev .product-visual {
+  order: 1;
+}
+.product-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-pink-dark);
+  background: var(--brand-pink-light);
+  padding: 0.32em 0.85em;
+  border-radius: 999px;
+  margin-bottom: 0.9rem;
+}
+html[data-theme="dark"] .product-tag {
+  color: #f472b6;
+  background: color-mix(in srgb, var(--brand-purple) 32%, transparent);
+}
+.product-copy h3 {
+  font-size: clamp(1.35rem, 2vw, 1.6rem);
+  margin-bottom: 0.6rem;
+}
+.product-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.3rem;
+}
+.product-points li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: 0.94rem;
+  color: var(--ink-soft);
+}
+.product-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--brand-gradient);
+  transform: rotate(45deg);
+}
+
+.product-visual {
+  display: flex;
+  justify-content: center;
+}
+.product-card {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  border-radius: var(--radius-lg);
+  filter: drop-shadow(0 20px 40px -18px rgba(228, 35, 127, 0.28));
+}
+
+/* Accounting illustration: bars grow and the cash-flow line
+   draws in once the panel scrolls into view. */
+.acct-bar {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  transform: scaleY(0);
+  transition: transform 0.8s var(--ease);
+}
+.acct-bar-1 {
+  transition-delay: 0.05s;
+}
+.acct-bar-2 {
+  transition-delay: 0.15s;
+}
+.acct-bar-3 {
+  transition-delay: 0.25s;
+}
+.acct-bar-4 {
+  transition-delay: 0.35s;
+}
+.acct-bar-5 {
+  transition-delay: 0.45s;
+}
+.reveal.in-view .acct-bar {
+  transform: scaleY(1);
+}
+.acct-spark {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 1.1s var(--ease) 0.4s;
+}
+.reveal.in-view .acct-spark {
+  stroke-dashoffset: 0;
+}
+
+/* HR illustration: attendance donut fills in and the online
+   status dot pulses gently. */
+.hr-donut {
+  transition: stroke-dashoffset 1.3s var(--ease) 0.15s;
+}
+.reveal.in-view .hr-donut {
+  stroke-dashoffset: 38.4; /* ~82% of a 213.6 circumference */
+}
+.hr-pulse-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hrPulse 2s infinite ease-out;
+}
+@keyframes hrPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .acct-bar,
+  .acct-spark,
+  .hr-donut {
+    transition: none;
+    transform: none;
+    stroke-dashoffset: 0;
+  }
+  .hr-donut {
+    stroke-dashoffset: 38.4;
+  }
+  .hr-pulse-ring {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* =========================================================
    Process
    ========================================================= */
 .process-list {
@@ -993,6 +1188,18 @@ html[data-theme="dark"] .footer-links a:hover {
   }
   .contact-grid {
     grid-template-columns: 1fr;
+  }
+  .product-panel {
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
+    margin-bottom: 3.2rem;
+  }
+  .product-panel-rev .product-copy,
+  .product-panel-rev .product-visual {
+    order: initial;
+  }
+  .product-card {
+    max-width: 320px;
   }
   .hero {
     grid-template-columns: 1fr;
