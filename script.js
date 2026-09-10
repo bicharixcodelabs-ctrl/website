@@ -309,6 +309,56 @@
     nextBtn.addEventListener("click", startAutoplay);
     dotsWrap.addEventListener("click", startAutoplay);
 
+    /* -----------------------------------------------------
+       Swipe support — phones expect to drag the cards left/
+       right, not just tap the arrow buttons.
+       ----------------------------------------------------- */
+    const viewport = document.querySelector(".testimonials-viewport");
+    if (viewport) {
+      const SWIPE_THRESHOLD = 40;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touching = false;
+
+      viewport.addEventListener(
+        "touchstart",
+        function (e) {
+          const t = e.touches[0];
+          touchStartX = t.clientX;
+          touchStartY = t.clientY;
+          touching = true;
+          stopAutoplay();
+        },
+        { passive: true },
+      );
+
+      viewport.addEventListener(
+        "touchend",
+        function (e) {
+          if (!touching) return;
+          touching = false;
+          const t = e.changedTouches[0];
+          const dx = t.clientX - touchStartX;
+          const dy = t.clientY - touchStartY;
+
+          if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+            if (dx < 0 && !nextBtn.disabled) {
+              nextBtn.click();
+            } else if (dx > 0 && !prevBtn.disabled) {
+              prevBtn.click();
+            }
+          }
+          startAutoplay();
+        },
+        { passive: true },
+      );
+
+      viewport.addEventListener("touchcancel", function () {
+        touching = false;
+        startAutoplay();
+      });
+    }
+
     startAutoplay();
   }
 
@@ -375,12 +425,14 @@
 
   /* -----------------------------------------------------
      Hero code-card: once the initial type-out is done, the
-     quoted word keeps cycling — erase it, type the next one,
-     pause, repeat.
+     whole ("word") call keeps cycling — erase the entire
+     parenthesised string, then type the next one in, so the
+     cursor (which sits right after it) never looks detached
+     from what's actually being typed.
      ----------------------------------------------------- */
   function startIdeaWordLoop() {
-    const wordEl = document.getElementById("heroIdeaWord");
-    if (!wordEl) return;
+    const callEl = document.getElementById("heroIdeaCall");
+    if (!callEl) return;
 
     const words = [
       "your idea",
@@ -390,29 +442,60 @@
     ];
     let index = 0;
 
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    // Renders the first `n` characters of `(" word ")` for a given
+    // word, keeping the quoted portion in the green string colour
+    // and the parentheses in the default code colour, just like the
+    // fully typed-out state.
+    function renderCall(word, n) {
+      const plain = '("' + word + '")';
+      const total = plain.length;
+      n = Math.max(0, Math.min(n, total));
+      const sub = plain.slice(0, n);
+      const greenEnd = word.length + 3; // end of the quoted region within `plain`
+
+      const before = sub.slice(0, 1);
+      const green = sub.slice(1, Math.min(n, greenEnd));
+      const after = sub.slice(Math.min(n, greenEnd));
+
+      let html = escapeHtml(before);
+      if (green)
+        html += '<span class="tok-str">' + escapeHtml(green) + "</span>";
+      html += escapeHtml(after);
+
+      callEl.innerHTML = html;
+    }
+
     function eraseThenType() {
-      const current = wordEl.textContent;
-      let i = current.length;
+      const currentWord = words[index];
+      let n = currentWord.length + 4;
 
       function erase() {
-        i--;
-        wordEl.textContent = current.slice(0, i);
-        if (i > 0) {
-          setTimeout(erase, 32);
+        n--;
+        renderCall(currentWord, n);
+        if (n > 0) {
+          setTimeout(erase, 28);
         } else {
           setTimeout(type, 260);
         }
       }
 
       index = (index + 1) % words.length;
-      const next = words[index];
-      let j = 0;
+      const nextWord = words[index];
+      const nextTotal = nextWord.length + 4;
+      let m = 0;
 
       function type() {
-        j++;
-        wordEl.textContent = next.slice(0, j);
-        if (j < next.length) {
-          setTimeout(type, 55);
+        m++;
+        renderCall(nextWord, m);
+        if (m < nextTotal) {
+          setTimeout(type, 45);
         } else {
           setTimeout(eraseThenType, 2600);
         }
