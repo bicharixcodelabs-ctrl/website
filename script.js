@@ -5,9 +5,10 @@
 (function () {
   "use strict";
 
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
+  /* Animations always run on this site regardless of the OS/browser
+     "reduce motion" setting, since that flag can get flipped on by
+     laptop battery-saver / power-saving modes without the person
+     actually wanting animations off. */
 
   /* -----------------------------------------------------
      Scroll-reveal animations for section heads, cards and
@@ -18,7 +19,7 @@
      ----------------------------------------------------- */
   const revealTargets = document.querySelectorAll(".reveal");
   if (revealTargets.length) {
-    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    if (!("IntersectionObserver" in window)) {
       revealTargets.forEach(function (el) {
         el.classList.add("in-view");
       });
@@ -139,7 +140,7 @@
     },
     {
       quote:
-        "Clean, maintainable code and clear documentation — our own team could pick up where they left off without friction.",
+        "Clean, maintainable code and clear documentation, our own team could pick up where they left off without friction.",
       name: "Anisha Maharjan",
       role: "Product Manager, EdTech platform",
       initials: "AM",
@@ -279,7 +280,7 @@
     }
 
     function startAutoplay() {
-      if (prefersReducedMotion || pageCount <= 1) return;
+      if (pageCount <= 1) return;
       stopAutoplay();
       autoplayTimer = setInterval(function () {
         page = (page + 1) % pageCount;
@@ -329,9 +330,10 @@
 
     function showFinal() {
       heroCode.innerHTML = finalHTML;
+      startIdeaWordLoop();
     }
 
-    if (prefersReducedMotion || !fullText) {
+    if (!fullText) {
       showFinal();
     } else {
       heroCode.textContent = "";
@@ -372,10 +374,61 @@
   }
 
   /* -----------------------------------------------------
+     Hero code-card: once the initial type-out is done, the
+     quoted word keeps cycling — erase it, type the next one,
+     pause, repeat.
+     ----------------------------------------------------- */
+  function startIdeaWordLoop() {
+    const wordEl = document.getElementById("heroIdeaWord");
+    if (!wordEl) return;
+
+    const words = [
+      "your idea",
+      "your startup",
+      "your product",
+      "your workflow",
+    ];
+    let index = 0;
+
+    function eraseThenType() {
+      const current = wordEl.textContent;
+      let i = current.length;
+
+      function erase() {
+        i--;
+        wordEl.textContent = current.slice(0, i);
+        if (i > 0) {
+          setTimeout(erase, 32);
+        } else {
+          setTimeout(type, 260);
+        }
+      }
+
+      index = (index + 1) % words.length;
+      const next = words[index];
+      let j = 0;
+
+      function type() {
+        j++;
+        wordEl.textContent = next.slice(0, j);
+        if (j < next.length) {
+          setTimeout(type, 55);
+        } else {
+          setTimeout(eraseThenType, 2600);
+        }
+      }
+
+      erase();
+    }
+
+    setTimeout(eraseThenType, 2600);
+  }
+
+  /* -----------------------------------------------------
      "LIVE" status dot 
      ----------------------------------------------------- */
   const liveDot = document.querySelector(".code-live-dot");
-  if (liveDot && !prefersReducedMotion) {
+  if (liveDot) {
     let liveOn = true;
     setInterval(function () {
       liveOn = !liveOn;
@@ -384,10 +437,29 @@
   }
 
   /* -----------------------------------------------------
+     Hero heading word-swap: "your idea ___." cycles through
+     a few synonyms with a quick fade/blur switch.
+     ----------------------------------------------------- */
+  const wordSwapEl = document.getElementById("heroWordSwap");
+  if (wordSwapEl) {
+    const swapWords = ["deserves", "demands", "needs", "requires"];
+    let swapIndex = 0;
+
+    setInterval(function () {
+      wordSwapEl.classList.add("is-swapping");
+      setTimeout(function () {
+        swapIndex = (swapIndex + 1) % swapWords.length;
+        wordSwapEl.textContent = swapWords[swapIndex];
+        wordSwapEl.classList.remove("is-swapping");
+      }, 350);
+    }, 2600);
+  }
+
+  /* -----------------------------------------------------
      Hero fact-list "live" pulse rings 
      ----------------------------------------------------- */
   const pulseRings = document.querySelectorAll(".hero-fact-ring");
-  if (pulseRings.length && !prefersReducedMotion) {
+  if (pulseRings.length) {
     const DURATION = 2200; // ms per pulse cycle
     const DELAYS = [0, 500, 1000]; // stagger each dot like before
     const start = performance.now();
