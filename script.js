@@ -157,6 +157,9 @@
     let page = 0;
     let pageCount = Math.ceil(testimonials.length / perPage);
 
+    const TRANSITION_MS = 220;
+    let transitioning = false;
+
     function getPerPage() {
       const w = window.innerWidth;
       if (w <= 760) return 1;
@@ -218,8 +221,7 @@
           dot.className = "pager-dot";
           dot.setAttribute("aria-label", "Go to testimonials page " + (i + 1));
           dot.addEventListener("click", function () {
-            page = i;
-            renderPage();
+            changePage(i);
           });
           dotsWrap.appendChild(dot);
         }
@@ -235,17 +237,65 @@
       });
     }
 
+    /* -----------------------------------------------------
+       Smoothly animate between pages — the current cards
+       slide/fade out in the direction of travel, then the
+       new cards slide/fade in from the opposite side, instead
+       of just snapping straight to the new page.
+       ----------------------------------------------------- */
+    function changePage(newPage) {
+      newPage = Math.max(0, Math.min(newPage, pageCount - 1));
+      if (newPage === page || transitioning) return;
+
+      const forward = newPage > page;
+      transitioning = true;
+      page = newPage;
+
+      track.style.transition =
+        "opacity 0.22s var(--ease), transform 0.22s var(--ease)";
+      track.style.opacity = "0";
+      track.style.transform = forward
+        ? "translateX(-18px)"
+        : "translateX(18px)";
+
+      setTimeout(function () {
+        renderPage();
+
+        // Land the new cards just off to the side we came from,
+        // with no transition, then...
+        track.style.transition = "none";
+        track.style.transform = forward
+          ? "translateX(18px)"
+          : "translateX(-18px)";
+        track.style.opacity = "0";
+
+        // ...force a reflow so the browser registers that
+        // starting position before animating it back to rest.
+        void track.offsetWidth;
+
+        track.style.transition =
+          "opacity 0.22s var(--ease), transform 0.22s var(--ease)";
+        track.style.opacity = "1";
+        track.style.transform = "translateX(0)";
+
+        setTimeout(function () {
+          track.style.transition = "";
+          track.style.transform = "";
+          track.style.opacity = "";
+          transitioning = false;
+        }, TRANSITION_MS);
+      }, TRANSITION_MS);
+    }
+
     prevBtn.addEventListener("click", function () {
       if (page > 0) {
-        page -= 1;
-        renderPage();
+        changePage(page - 1);
       }
     });
 
     nextBtn.addEventListener("click", function () {
       if (page < pageCount - 1) {
-        page += 1;
-        renderPage();
+        changePage(page + 1);
       }
     });
 
@@ -283,8 +333,7 @@
       if (pageCount <= 1) return;
       stopAutoplay();
       autoplayTimer = setInterval(function () {
-        page = (page + 1) % pageCount;
-        renderPage();
+        changePage((page + 1) % pageCount);
       }, AUTOPLAY_MS);
     }
 
