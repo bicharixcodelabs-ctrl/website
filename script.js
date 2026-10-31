@@ -159,9 +159,40 @@
 
     sPrev.addEventListener("click", function () {
       go(index - 1);
+      startAuto();
     });
     sNext.addEventListener("click", function () {
       go(index + 1);
+      startAuto();
+    });
+
+    /* Auto-play: faster than the testimonials (2.5s). Pauses while the
+       pointer is over the cards or the tab is hidden, restarts after
+       any click, and loops back to the first card at the end. */
+    const SERVICES_AUTOPLAY_MS = 2500;
+    let autoTimer = null;
+
+    function stopAuto() {
+      if (autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+      }
+    }
+
+    function startAuto() {
+      stopAuto();
+      if (maxIndex() === 0) return;
+      autoTimer = setInterval(function () {
+        go(index + 1);
+      }, SERVICES_AUTOPLAY_MS);
+    }
+
+    sViewport.addEventListener("mouseenter", stopAuto);
+    sViewport.addEventListener("mouseleave", startAuto);
+    sDots.addEventListener("click", startAuto);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stopAuto();
+      else startAuto();
     });
 
     let sx = 0;
@@ -171,6 +202,7 @@
       function (e) {
         sx = e.touches[0].clientX;
         sy = e.touches[0].clientY;
+        stopAuto();
       },
       { passive: true },
     );
@@ -182,6 +214,7 @@
         if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
           go(dx < 0 ? index + 1 : index - 1);
         }
+        startAuto();
       },
       { passive: true },
     );
@@ -200,12 +233,14 @@
         update();
         void sTrack.offsetWidth;
         sTrack.style.transition = "";
+        startAuto();
       }, 120);
     });
 
     perView = getPerView();
     buildDots();
     update();
+    startAuto();
   })();
 
   /* -----------------------------------------------------
