@@ -40,10 +40,10 @@
           var stored = localStorage.getItem("bicharix-theme");
           document.documentElement.setAttribute(
             "data-theme",
-            stored === "light" || stored === "dark" ? stored : "dark",
+            stored === "light" || stored === "dark" ? stored : "light",
           );
         } catch (e) {
-          document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.setAttribute("data-theme", "light");
         }
       })();
     </script>
@@ -56,16 +56,16 @@
 
     <!-- Primary SEO -->
     <title>
-      Bicharix Code Labs Private Limited | Custom Software &amp; Web Development
-      Studio
+      Bicharix Code Labs Private Limited | Software Development &amp; IT Support
+      in Kathmandu
     </title>
     <meta
       name="description"
-      content="Bicharix Code Labs builds custom software, dynamic web applications and SEO-first static websites. A small, senior software studio in Kathmandu that ships production-ready products and extends your team on request."
+      content="Bicharix Code Labs is a small software studio in Kathmandu. We build custom software, web applications, SEO-friendly websites and mobile apps, and we offer IT support and team extension."
     />
     <meta
       name="keywords"
-      content="custom software development, dynamic website development, SEO friendly static website, software development company Nepal, web application development, IT services Kathmandu, Bicharix Code Labs"
+      content="custom software development, web application development, SEO friendly website, mobile app development, IT support Kathmandu, software company Nepal, HR software, accounting software, Bicharix Code Labs"
     />
     <meta name="author" content="Bicharix Code Labs Private Limited" />
     <meta name="robots" content="index, follow" />
@@ -75,19 +75,19 @@
       href="https://bicharixcodelabs-ctrl.github.io/website/"
     />
 
-    <!-- Theme colour (site defaults to dark mode) -->
-    <meta name="theme-color" content="#0f0a1a" />
+    <!-- Theme colour (site defaults to light mode) -->
+    <meta name="theme-color" content="#faf9fc" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Bicharix Code Labs" />
     <meta
       property="og:title"
-      content="Bicharix Code Labs Private Limited | Custom Software &amp; Web Development Studio"
+      content="Bicharix Code Labs Private Limited | Software Development &amp; IT Support in Kathmandu"
     />
     <meta
       property="og:description"
-      content="Custom software, dynamic web apps and SEO-first static sites, built by a small studio that ships like it's their own product."
+      content="Custom software, web and mobile apps, SEO-friendly websites and IT support from a small studio in Kathmandu."
     />
     <meta
       property="og:url"
@@ -101,7 +101,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Bicharix Code Labs: custom software, dynamic web apps and SEO-first sites"
+      content="Bicharix Code Labs: custom software, web and mobile apps, websites and IT support"
     />
     <meta property="og:locale" content="en_US" />
 
@@ -110,7 +110,7 @@
     <meta name="twitter:title" content="Bicharix Code Labs Private Limited" />
     <meta
       name="twitter:description"
-      content="Custom software, dynamic web apps and SEO-first static sites, built by a small studio that ships like it's their own product."
+      content="Custom software, web and mobile apps, SEO-friendly websites and IT support from a small studio in Kathmandu."
     />
     <meta
       name="twitter:image"
@@ -165,7 +165,7 @@
         "alternateName": "Bicharix Code Labs",
         "url": "https://bicharixcodelabs-ctrl.github.io/website/",
         "logo": "https://bicharixcodelabs-ctrl.github.io/website/assets/logo.png",
-        "description": "Bicharix Code Labs is a software studio building custom software, dynamic web applications and SEO-first static websites.",
+        "description": "Bicharix Code Labs is a software studio in Kathmandu building custom software, web and mobile applications and SEO-friendly websites, with IT support for businesses.",
         "email": "bicharixcodelabs@gmail.com",
         "address": {
           "@type": "PostalAddress",
@@ -283,9 +283,9 @@
             >
           </h1>
           <p class="hero-lede">
-            Bicharix Code Labs designs and builds custom software, dynamic web
-            platforms and SEO-first static websites, end to end, or as an
-            extension of your existing team.
+            Bicharix Code Labs builds custom software, web and mobile apps and
+            SEO-friendly websites for businesses. We also provide IT support,
+            and we can work as an extension of your own team.
           </p>
           <div class="hero-actions">
             <a href="#contact" class="btn btn-primary">Start a project</a>
@@ -296,19 +296,19 @@
               <span class="hero-fact-dot" aria-hidden="true"
                 ><span class="hero-fact-ring"></span
               ></span>
-              New studio, senior standards
+              A young studio, experienced developers
             </li>
             <li>
               <span class="hero-fact-dot" aria-hidden="true"
                 ><span class="hero-fact-ring"></span
               ></span>
-              Custom-built, not templated
+              Built from scratch for your business
             </li>
             <li>
               <span class="hero-fact-dot" aria-hidden="true"
                 ><span class="hero-fact-ring"></span
               ></span>
-              Direct access to the people coding
+              You talk to the developers directly
             </li>
           </ul>
         </div>
@@ -358,123 +358,223 @@
           <p class="kicker">Services</p>
           <h2 id="services-heading">What we build</h2>
           <p class="section-lede">
-            Four ways to work with us. Pick one, or combine them as your project
-            grows.
+            Choose what you need today. You can add more services whenever your
+            project or business grows.
           </p>
         </div>
 
-        <div class="services-grid reveal">
-          <article class="service-card">
-            <div class="service-icon" aria-hidden="true">
-              <svg viewBox="0 0 40 40" width="30" height="30">
-                <path
-                  d="M13 12 6 20l7 8M27 12l7 8-7 8M23 9l-6 22"
-                  fill="none"
-                  stroke="url(#svcGrad)"
-                  stroke-width="2.4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-            <h3>Custom software</h3>
-            <p>
-              Internal tools, automations, and full products built around how
-              your business actually works, not the closest off-the-shelf fit.
-            </p>
-          </article>
+        <div class="services-carousel reveal">
+          <div class="services-viewport" id="servicesViewport">
+            <div class="services-grid" id="servicesTrack">
+              <article class="service-card">
+                <div class="service-icon" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" width="30" height="30">
+                    <path
+                      d="M13 12 6 20l7 8M27 12l7 8-7 8M23 9l-6 22"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+                <h3>Custom software</h3>
+                <p>
+                  Internal tools, automation and complete products, built around
+                  the way your business works.
+                </p>
+              </article>
 
-          <article class="service-card">
-            <div class="service-icon" aria-hidden="true">
-              <svg viewBox="0 0 40 40" width="30" height="30">
-                <rect
-                  x="5"
-                  y="8"
-                  width="30"
-                  height="22"
-                  rx="2"
-                  fill="none"
-                  stroke="url(#svcGrad)"
-                  stroke-width="2.2"
-                />
-                <path
-                  d="M5 14h30M12 24h9"
-                  stroke="url(#svcGrad)"
-                  stroke-width="2.2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </div>
-            <h3>Dynamic web applications</h3>
-            <p>
-              Dashboards, admin panels, client portals and full-stack web apps
-              with real data, auth and logic behind them.
-            </p>
-          </article>
+              <article class="service-card">
+                <div class="service-icon" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" width="30" height="30">
+                    <rect
+                      x="5"
+                      y="8"
+                      width="30"
+                      height="22"
+                      rx="2"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                    />
+                    <path
+                      d="M5 14h30M12 24h9"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </div>
+                <h3>Dynamic web applications</h3>
+                <p>
+                  Dashboards, admin panels, client portals and web apps with
+                  user logins, databases and your own business rules.
+                </p>
+              </article>
 
-          <article class="service-card">
-            <div class="service-icon" aria-hidden="true">
-              <svg viewBox="0 0 40 40" width="30" height="30">
-                <circle
-                  cx="17"
-                  cy="17"
-                  r="10"
-                  fill="none"
-                  stroke="url(#svcGrad)"
-                  stroke-width="2.2"
-                />
-                <line
-                  x1="25"
-                  y1="25"
-                  x2="34"
-                  y2="34"
-                  stroke="url(#svcGrad)"
-                  stroke-width="2.4"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </div>
-            <h3>SEO-first static websites</h3>
-            <p>
-              Fast, lightweight marketing sites and brochure pages engineered
-              from the first line of HTML to rank and to load instantly.
-            </p>
-          </article>
+              <article class="service-card">
+                <div class="service-icon" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" width="30" height="30">
+                    <circle
+                      cx="17"
+                      cy="17"
+                      r="10"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                    />
+                    <line
+                      x1="25"
+                      y1="25"
+                      x2="34"
+                      y2="34"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </div>
+                <h3>SEO-first static websites</h3>
+                <p>
+                  Fast, lightweight websites for your business, written in clean
+                  HTML so they load quickly and are easy for Google to read.
+                </p>
+              </article>
 
-          <article class="service-card">
-            <div class="service-icon" aria-hidden="true">
-              <svg viewBox="0 0 40 40" width="30" height="30">
-                <circle
-                  cx="13"
-                  cy="14"
-                  r="5"
-                  fill="none"
-                  stroke="url(#svcGrad)"
-                  stroke-width="2.2"
-                />
-                <circle
-                  cx="27"
-                  cy="14"
-                  r="5"
-                  fill="none"
-                  stroke="url(#svcGrad)"
-                  stroke-width="2.2"
-                />
-                <path
-                  d="M4 33c1-6 5.5-9 9-9s8 3 8-0 5-9 9-9 8 3 9 9"
-                  fill="none"
-                  stroke="url(#svcGrad)"
-                  stroke-width="2.2"
-                  stroke-linecap="round"
-                />
-              </svg>
+              <article class="service-card">
+                <div class="service-icon" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" width="30" height="30">
+                    <circle
+                      cx="15"
+                      cy="14"
+                      r="5.5"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                    />
+                    <path
+                      d="M4.5 33c0-6.2 4.7-10 10.5-10s10.5 3.8 10.5 10"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                    />
+                    <circle
+                      cx="28.5"
+                      cy="15.5"
+                      r="4.2"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                    />
+                    <path
+                      d="M29.5 23.4c3.6 0.4 6 3.2 6 8.1"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </div>
+                <h3>Team extension</h3>
+                <p>
+                  Our developers join your existing codebase and work with your
+                  team, sprint by sprint.
+                </p>
+              </article>
+
+              <article class="service-card">
+                <div class="service-icon" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" width="30" height="30">
+                    <path
+                      d="M8 24v-4a12 12 0 0 1 24 0v4"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                    />
+                    <rect
+                      x="5"
+                      y="22"
+                      width="7"
+                      height="10"
+                      rx="2.5"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                    />
+                    <rect
+                      x="28"
+                      y="22"
+                      width="7"
+                      height="10"
+                      rx="2.5"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                    />
+                    <path
+                      d="M32 32c0 3-3 4-8 4"
+                      fill="none"
+                      stroke="url(#svcGrad)"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </div>
+                <h3>IT support</h3>
+                <p>
+                  Troubleshooting, system and network setup, email, backups and
+                  regular maintenance for your office and your team.
+                </p>
+              </article>
             </div>
-            <h3>Team extension</h3>
-            <p>
-              Join an existing codebase and roadmap as extra senior capacity,
-              sprint by sprint, alongside your own team.
-            </p>
-          </article>
+          </div>
+        </div>
+
+        <div
+          class="paginator"
+          id="servicesPaginator"
+          role="navigation"
+          aria-label="Services pages"
+        >
+          <button
+            type="button"
+            class="pager-btn"
+            id="servicesPrev"
+            aria-label="Previous services"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path
+                d="M15 5l-7 7 7 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <div class="pager-dots" id="servicesDots"></div>
+          <button
+            type="button"
+            class="pager-btn"
+            id="servicesNext"
+            aria-label="Next services"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path
+                d="M9 5l7 7-7 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
         </div>
         <svg width="0" height="0" style="position: absolute">
           <defs>
@@ -496,8 +596,8 @@
           <p class="kicker">Products</p>
           <h2 id="products-heading">Ready-to-run business software</h2>
           <p class="section-lede">
-            Beyond bespoke builds, we develop accounting and HR platforms your
-            team can brand and run from day one.
+            Along with custom projects, we build accounting and HR software that
+            your team can brand and start using right away.
           </p>
         </div>
 
@@ -506,9 +606,9 @@
             <span class="product-tag mono">Finance</span>
             <h3>Accounting software</h3>
             <p>
-              Invoicing, ledgers, expense tracking and financial reports, wired
-              to your chart of accounts and ready for your accountant on day
-              one.
+              Invoicing, ledgers, expense tracking and financial reports, set up
+              around your chart of accounts so your accountant can start right
+              away.
             </p>
             <ul class="product-points">
               <li>Automated invoicing &amp; payment tracking</li>
@@ -689,16 +789,18 @@
 
         <div class="product-panel product-panel-rev reveal">
           <div class="product-copy">
-            <span class="product-tag mono">People</span>
+            <span class="product-tag mono">People · Web &amp; mobile</span>
             <h3>HR software</h3>
             <p>
               Employee records, attendance, leave and payroll basics in one
-              dashboard, built around how your HR team actually works.
+              dashboard, plus a mobile app so your staff can use it from their
+              phones.
             </p>
             <ul class="product-points">
               <li>Centralised employee directory &amp; org chart</li>
               <li>Attendance, leave and shift tracking</li>
               <li>Payroll-ready exports every cycle</li>
+              <li>Mobile app for employees to check in and request leave</li>
             </ul>
           </div>
           <div class="product-visual" aria-hidden="true">
@@ -706,7 +808,7 @@
               class="product-card"
               viewBox="0 0 380 260"
               role="img"
-              aria-label="HR software dashboard preview showing an employee directory and today's attendance"
+              aria-label="HR software dashboard preview showing an employee directory, today's attendance and a mobile app"
             >
               <rect
                 x="0.5"
@@ -860,6 +962,25 @@
               >
                 Next payroll run · 5 days
               </text>
+              <rect
+                x="318"
+                y="168"
+                width="22"
+                height="30"
+                rx="4"
+                fill="none"
+                stroke="url(#svcGrad)"
+                stroke-width="2"
+              />
+              <line
+                x1="326"
+                y1="192"
+                x2="332"
+                y2="192"
+                stroke="url(#svcGrad)"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
           </div>
         </div>
@@ -875,8 +996,7 @@
           <p class="kicker">Process</p>
           <h2 id="process-heading">How an engagement runs</h2>
           <p class="section-lede">
-            A straight line from first call to shipped software, with no
-            handoffs between departments you'll never meet.
+            From the first call to launch, you work with the same small team.
           </p>
         </div>
 
@@ -886,8 +1006,8 @@
             <div>
               <h3>Discover</h3>
               <p>
-                We map the problem, the users, and the constraints before a
-                single screen gets designed.
+                We learn about the problem, the users and your limits before any
+                screen is designed.
               </p>
             </div>
           </li>
@@ -896,8 +1016,8 @@
             <div>
               <h3>Design</h3>
               <p>
-                Architecture and interface decisions get made together, so the
-                build doesn't fight the design later.
+                We decide the structure and the look together, so the build
+                matches the design.
               </p>
             </div>
           </li>
@@ -906,8 +1026,8 @@
             <div>
               <h3>Build</h3>
               <p>
-                Short cycles, visible progress, and a staging link you can poke
-                at from week one.
+                Work moves in short cycles, and you get a link to try the
+                product from the first week.
               </p>
             </div>
           </li>
@@ -916,8 +1036,8 @@
             <div>
               <h3>Launch &amp; support</h3>
               <p>
-                We ship it, watch it, and stay reachable for the fixes and
-                iterations that come after launch.
+                We launch the product, keep an eye on it, and stay available for
+                fixes and updates afterwards.
               </p>
             </div>
           </li>
@@ -928,36 +1048,36 @@
       <section id="why" class="section" aria-labelledby="why-heading">
         <div class="section-head reveal">
           <p class="kicker">Why us</p>
-          <h2 id="why-heading">Why teams choose to work with us</h2>
+          <h2 id="why-heading">Why work with us</h2>
         </div>
 
         <div class="why-grid reveal">
           <article class="why-card">
-            <h3>No agency layers</h3>
+            <h3>Talk to the developers</h3>
             <p>
-              You talk to the people writing the code, not an account manager
-              relaying messages.
+              You speak directly with the people writing your code. No
+              middlemen.
             </p>
           </article>
           <article class="why-card">
-            <h3>Built for search from day one</h3>
+            <h3>Easy to find on Google</h3>
             <p>
-              Semantic markup, fast load times and structured data are part of
-              the build, not an afterthought.
+              Clean markup, fast pages and structured data are included in every
+              website we build.
             </p>
           </article>
           <article class="why-card">
-            <h3>Transparent scope &amp; pricing</h3>
+            <h3>Clear scope and pricing</h3>
             <p>
-              You know what you're paying for and why, before the work starts,
-              with no surprise line items.
+              You know what you are paying for before the work begins, and the
+              price does not change along the way.
             </p>
           </article>
           <article class="why-card">
-            <h3>Small on purpose</h3>
+            <h3>A small team</h3>
             <p>
-              We take on fewer projects at a time so each one gets senior
-              attention, start to finish.
+              We take fewer projects at a time, so every client gets proper
+              attention from start to finish.
             </p>
           </article>
         </div>
@@ -972,10 +1092,7 @@
         <div class="section-head reveal">
           <p class="kicker">Testimonials</p>
           <h2 id="testimonials-heading">What early clients say</h2>
-          <p class="section-lede">
-            Sample quotes below. Replace these with real client feedback as
-            engagements wrap up.
-          </p>
+          <p class="section-lede">What clients say about working with us.</p>
         </div>
 
         <div class="testimonials-viewport">
@@ -1041,9 +1158,8 @@
             <p class="kicker">Start a project</p>
             <h2 id="contact-heading">Tell us what you're building.</h2>
             <p class="section-lede">
-              Send a few lines about the project and we'll reply within one
-              business day with next steps. No sales call required to get a
-              straight answer.
+              Send us a few lines about your project, or the IT help you need.
+              We reply within one business day.
             </p>
           </div>
 
@@ -1053,7 +1169,7 @@
               bicharixcodelabs@gmail.com
             </a>
             <p class="contact-location">
-              Kathmandu, Nepal, working with clients remotely
+              Kathmandu, Nepal. We work with clients remotely.
             </p>
             <a
               href="mailto:bicharixcodelabs@gmail.com"
@@ -1078,8 +1194,8 @@
             height="45"
           />
           <p>
-            Bicharix Code Labs Private Limited: custom software, dynamic web
-            apps, and SEO-first static sites.
+            Bicharix Code Labs Private Limited. Custom software, web and mobile
+            apps, websites and IT support.
           </p>
         </div>
         <nav class="footer-links" aria-label="Footer">

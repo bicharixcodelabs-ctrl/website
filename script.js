@@ -63,8 +63,8 @@
   function getPreferredTheme() {
     const stored = localStorage.getItem(THEME_KEY);
     if (stored === "light" || stored === "dark") return stored;
-    // Site defaults to dark mode regardless of system preference.
-    return "dark";
+    // Site defaults to light mode regardless of system preference.
+    return "light";
   }
 
   applyTheme(getPreferredTheme());
@@ -98,6 +98,115 @@
       });
     });
   }
+
+  /* -----------------------------------------------------
+     Services slider. Always shows full cards and slides one
+     card at a time; the arrows loop from the last to the first.
+     ----------------------------------------------------- */
+  (function () {
+    const sTrack = document.getElementById("servicesTrack");
+    const sViewport = document.getElementById("servicesViewport");
+    const sPrev = document.getElementById("servicesPrev");
+    const sNext = document.getElementById("servicesNext");
+    const sDots = document.getElementById("servicesDots");
+    if (!sTrack || !sViewport || !sPrev || !sNext || !sDots) return;
+
+    const cards = sTrack.children;
+    let index = 0;
+    let perView = 3;
+
+    function getPerView() {
+      const w = window.innerWidth;
+      if (w <= 760) return 1;
+      if (w <= 980) return 2;
+      return 3;
+    }
+
+    function maxIndex() {
+      return Math.max(0, cards.length - perView);
+    }
+
+    function buildDots() {
+      sDots.innerHTML = "";
+      for (let i = 0; i <= maxIndex(); i++) {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "pager-dot";
+        dot.setAttribute("aria-label", "Go to services position " + (i + 1));
+        dot.addEventListener("click", function () {
+          go(i);
+        });
+        sDots.appendChild(dot);
+      }
+      document.getElementById("servicesPaginator").style.display =
+        maxIndex() === 0 ? "none" : "";
+    }
+
+    function update() {
+      const gap = parseFloat(getComputedStyle(sTrack).columnGap) || 0;
+      const step = cards[0].getBoundingClientRect().width + gap;
+      sTrack.style.transform = "translateX(" + -index * step + "px)";
+      sDots.querySelectorAll(".pager-dot").forEach(function (d, i) {
+        d.classList.toggle("active", i === index);
+      });
+    }
+
+    function go(i) {
+      const max = maxIndex();
+      index = i > max ? 0 : i < 0 ? max : i;
+      update();
+    }
+
+    sPrev.addEventListener("click", function () {
+      go(index - 1);
+    });
+    sNext.addEventListener("click", function () {
+      go(index + 1);
+    });
+
+    let sx = 0;
+    let sy = 0;
+    sViewport.addEventListener(
+      "touchstart",
+      function (e) {
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+      },
+      { passive: true },
+    );
+    sViewport.addEventListener(
+      "touchend",
+      function (e) {
+        const dx = e.changedTouches[0].clientX - sx;
+        const dy = e.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+          go(dx < 0 ? index + 1 : index - 1);
+        }
+      },
+      { passive: true },
+    );
+
+    let t;
+    window.addEventListener("resize", function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        const next = getPerView();
+        if (next !== perView) {
+          perView = next;
+          buildDots();
+        }
+        if (index > maxIndex()) index = maxIndex();
+        sTrack.style.transition = "none";
+        update();
+        void sTrack.offsetWidth;
+        sTrack.style.transition = "";
+      }, 120);
+    });
+
+    perView = getPerView();
+    buildDots();
+    update();
+  })();
 
   /* -----------------------------------------------------
      Testimonials data + paginator
@@ -206,8 +315,9 @@
         .join("");
 
       renderDots();
-      prevBtn.disabled = page === 0;
-      nextBtn.disabled = page === pageCount - 1;
+      // Buttons loop around, so they are never disabled.
+      prevBtn.disabled = false;
+      nextBtn.disabled = false;
     }
 
     function renderDots() {
@@ -288,15 +398,11 @@
     }
 
     prevBtn.addEventListener("click", function () {
-      if (page > 0) {
-        changePage(page - 1);
-      }
+      changePage((page - 1 + pageCount) % pageCount);
     });
 
     nextBtn.addEventListener("click", function () {
-      if (page < pageCount - 1) {
-        changePage(page + 1);
-      }
+      changePage((page + 1) % pageCount);
     });
 
     let resizeTimer;
@@ -319,7 +425,7 @@
        hover/keyboard focus and while the tab isn't visible,
        and is skipped entirely for reduced-motion users.
        ----------------------------------------------------- */
-    const AUTOPLAY_MS = 5000;
+    const AUTOPLAY_MS = 4000;
     let autoplayTimer = null;
 
     function stopAutoplay() {
@@ -337,12 +443,12 @@
       }, AUTOPLAY_MS);
     }
 
-    const testimonialsSection = document.getElementById("testimonials");
-    if (testimonialsSection) {
-      testimonialsSection.addEventListener("mouseenter", stopAutoplay);
-      testimonialsSection.addEventListener("mouseleave", startAutoplay);
-      testimonialsSection.addEventListener("focusin", stopAutoplay);
-      testimonialsSection.addEventListener("focusout", startAutoplay);
+    // Pause only while the pointer is over the cards themselves. Clicking
+    // the arrows or dots does not pause it, so the slider keeps moving.
+    const cardsViewport = document.querySelector(".testimonials-viewport");
+    if (cardsViewport) {
+      cardsViewport.addEventListener("mouseenter", stopAutoplay);
+      cardsViewport.addEventListener("mouseleave", startAutoplay);
     }
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) {
